@@ -6,17 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  extract:
+  trigger:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - run: pip install -r requirements.txt
-
-      - run: python extract.py
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Ping extraction endpoint
+        run: |
+          response=$(curl -s "https://samridhaggarwal-ecdc-api.hf.space/run?key=${{ secrets.RUN_SECRET }}")
+          echo "$response"
